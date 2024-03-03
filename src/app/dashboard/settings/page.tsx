@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/select";
 
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { revalidatePath } from "next/cache";
 async function getData(userId: string) {
   const data = await prisma?.user.findUnique({
     where: {
@@ -52,7 +53,7 @@ const Settings = async () => {
       },
     });
 
-    console.log(formData.get("name"));
+    revalidatePath('/', "layout");
   };
 
   return (
@@ -126,5 +127,6 @@ const Settings = async () => {
     </div>
   );
 };
+
 
 export default Settings;
