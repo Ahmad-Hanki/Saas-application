@@ -1,6 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { RegisterLink } from "@kinde-oss/kinde-auth-nextjs/components";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { redirect } from "next/navigation";
+
 export default async function Home() {
+  const {isAuthenticated} = getKindeServerSession();
+  const isLoggedIn = await isAuthenticated();
+  if (isLoggedIn) return redirect('/dashboard');
   return (
     <main>
       <section className="flex justify-center items-center bg-background h-[90vh] ">
