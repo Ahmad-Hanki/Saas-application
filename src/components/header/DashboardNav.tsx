@@ -9,7 +9,7 @@ import { navItem } from "./UserNav";
 const DashboardNav = () => {
   const pathname = usePathname();
   return (
-    <nav className="grid items-start gap-2">
+    <nav className="grid items-start gap-2 w-1/3">
       {navItem.map((item, i) => {
         return (
           <Link key={i} href={item.href}>

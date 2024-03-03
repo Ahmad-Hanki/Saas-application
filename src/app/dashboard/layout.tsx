@@ -17,6 +17,7 @@ async function getData({
   const user = await prisma.user.findUnique({
     where: {
       id: id,
+      
     },
     select: {
       id: true,
@@ -25,7 +26,7 @@ async function getData({
   });
 
   if (!user) {
-    
+
     await prisma.user.create({
       data: {
         id: id,
@@ -57,8 +58,8 @@ const DashboardLayout = async ({ children }: Props) => {
         <aside className="hidden w-[200px] flex-col md:flex ">
           <h1>hello</h1>
         </aside>
-        <main>
-          <DashboardNav />
+        <main className="flex justify-start gap-10">
+          <DashboardNav/>
           {children}
         </main>
       </div>

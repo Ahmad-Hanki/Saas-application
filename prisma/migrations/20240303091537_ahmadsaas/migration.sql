@@ -4,7 +4,7 @@ CREATE TABLE `User` (
     `name` VARCHAR(191) NULL,
     `email` VARCHAR(191) NOT NULL,
     `StripeCustomerId` VARCHAR(191) NULL,
-    `colorSchem` VARCHAR(191) NOT NULL DEFAULT 'theme-orange',
+    `colorScheme` VARCHAR(191) NOT NULL DEFAULT 'theme-orange',
 
     UNIQUE INDEX `User_id_key`(`id`),
     UNIQUE INDEX `User_email_key`(`email`),
