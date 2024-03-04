@@ -20,3 +20,11 @@ model User {
   StripeCustomerId String? @unique
   colorScheme      String  @default("theme-orange")
 }
+
+model Supscription {
+  stripeSubscriptionid String @id @unique
+  interval             String
+  status               String
+  planId               String
+  
+}

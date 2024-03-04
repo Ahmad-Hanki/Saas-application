@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { redirect } from "next/navigation";
 import prisma from "../../../prisma/client";
+import stripe from "@/lib/stripe";
 type Props = {
   children: ReactNode;
 };
@@ -17,7 +18,6 @@ async function getData({
   const user = await prisma.user.findUnique({
     where: {
       id: id,
-      
     },
     select: {
       id: true,
@@ -26,12 +26,26 @@ async function getData({
   });
 
   if (!user) {
-
     await prisma.user.create({
       data: {
         id: id,
         email: email,
         name: firstname + " " + lastname,
+      },
+    });
+  }
+
+  if (!user?.StripeCustomerId) {
+    const data = await stripe.customers.create({
+      email: email,
+    });
+
+    await prisma.user.update({
+      where: {
+        id: id,
+      },
+      data: {
+        StripeCustomerId: data.id,
       },
     });
   }
@@ -55,11 +69,9 @@ const DashboardLayout = async ({ children }: Props) => {
   return (
     <div className="flex flex-col space-y-6 mt-10">
       <div className="container grid flex-1 gap-12 md:grid-cols-[200px_1fr]">
-        <aside className="hidden w-[200px] flex-col md:flex ">
-          <h1>hello</h1>
-        </aside>
+        <aside className="hidden w-[200px] flex-col md:flex "></aside>
         <main className="flex justify-start gap-10">
-          <DashboardNav/>
+          <DashboardNav />
           {children}
         </main>
       </div>

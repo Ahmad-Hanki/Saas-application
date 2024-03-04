@@ -13,11 +13,13 @@ export const metadata: Metadata = {
 };
 
 const getData = async (userId: string) => {
+  if (!userId) return null;
+
   const data = prisma?.user.findUnique({
     where: { id: userId },
     select: {
-      colorScheme:true
-    }
+      colorScheme: true,
+    },
   });
   return data;
 };
@@ -27,12 +29,14 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const {getUser} =  getKindeServerSession();
+  const { getUser } = getKindeServerSession();
   const user = await getUser();
-  const color = await getData(user?.id as string)
+  const color = await getData(user?.id as string);
   return (
     <html lang="en">
-      <body className={`${inter.className} ${color?.colorScheme}`}>
+      <body
+        className={`${inter.className} ${color?.colorScheme ?? "theme-orange"}`}
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
