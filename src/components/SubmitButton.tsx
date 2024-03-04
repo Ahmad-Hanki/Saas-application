@@ -2,7 +2,7 @@
 
 import { useFormStatus } from "react-dom";
 import { Button } from "./ui/button";
-import { Loader } from "lucide-react";
+import { Loader, Loader2 } from "lucide-react";
 const SubmitButton = () => {
   const { pending } = useFormStatus();
 
@@ -12,5 +12,26 @@ const SubmitButton = () => {
     </Button>
   );
 };
+
+export function StripeSubscriptionCreationButton () {
+ 
+  const {pending} = useFormStatus();
+  return <>
+  {
+    pending? 
+    (
+      <Button disabled className="w-full">
+        <Loader2 className="mr-2 w-4 h-4 animate-spin"/> Please wait
+      </Button>
+    ) 
+    :
+    (
+      <Button type="submit" className="w-full">
+        Buy Today
+      </Button>
+    )
+  }
+  </>
+}
 
 export default SubmitButton;
