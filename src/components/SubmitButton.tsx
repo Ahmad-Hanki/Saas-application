@@ -1,8 +1,7 @@
 "use client";
-
 import { useFormStatus } from "react-dom";
 import { Button } from "./ui/button";
-import { Loader, Loader2 } from "lucide-react";
+import { Loader, Loader2, Trash } from "lucide-react";
 const SubmitButton = () => {
   const { pending } = useFormStatus();
 
@@ -33,5 +32,24 @@ export function StripeSubscriptionCreationButton () {
   }
   </>
 }
+
+export function TrashDelete() {
+  const { pending } = useFormStatus();
+
+  return (
+    <>
+      {pending ? (
+        <Button variant={"destructive"} size="icon" disabled>
+          <Loader2 className="h-4 w-4 animate-spin" />
+        </Button>
+      ) : (
+        <Button variant={"destructive"} size="icon" type="submit">
+          <Trash className="h-4 w-4" />
+        </Button>
+      )}
+    </>
+  );
+}
+
 
 export default SubmitButton;

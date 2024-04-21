@@ -2,11 +2,11 @@ import { Button } from "@/components/ui/button";
 import { RegisterLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { redirect } from "next/navigation";
-
+import { motion } from "framer-motion";
 export default async function Home() {
-  const {isAuthenticated} = getKindeServerSession();
+  const { isAuthenticated } = getKindeServerSession();
   const isLoggedIn = await isAuthenticated();
-  if (isLoggedIn) return redirect('/dashboard');
+  if (isLoggedIn) return redirect("/dashboard");
   return (
     <main>
       <section className="flex justify-center items-center bg-background h-[90vh] ">
@@ -14,7 +14,9 @@ export default async function Home() {
           <div className="max-w-3xl mx-auto text-center">
             <div>
               <span className="w-auto px-6 py-3 rounded-full bg-secondary">
-                <span className="text-sm font-medium text-primary">
+                <span
+              
+                >
                   Sort Your Notes easily
                 </span>
               </span>
