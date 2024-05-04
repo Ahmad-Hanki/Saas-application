@@ -1,41 +1,47 @@
-import DashboardNav from "@/components/header/DashboardNav";
 import { ReactNode } from "react";
+import { DashboardNav } from "../components/DashboardNav";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { redirect } from "next/navigation";
-import prisma from "@/db/client";
-import stripe from "@/lib/stripe";
-type Props = {
-  children: ReactNode;
-};
+import prisma from "../lib/db";
+import { stripe } from "../lib/stripe";
+import { unstable_noStore as noStore } from "next/cache";
 
 async function getData({
   email,
   id,
-  firstname,
-  lastname,
+  firstName,
+  lastName,
   profileImage,
-}: UserInfo) {
+}: {
+  email: string;
+  id: string;
+  firstName: string | undefined | null;
+  lastName: string | undefined | null;
+  profileImage: string | undefined | null;
+}) {
+  noStore();
   const user = await prisma.user.findUnique({
     where: {
       id: id,
     },
     select: {
       id: true,
-      StripeCustomerId: true,
+      stripeCustomerId: true,
     },
   });
 
   if (!user) {
+    const name = `${firstName ?? ""} ${lastName ?? ""}`;
     await prisma.user.create({
       data: {
         id: id,
         email: email,
-        name: firstname + " " + lastname,
+        name: name,
       },
     });
   }
 
-  if (!user?.StripeCustomerId) {
+  if (!user?.stripeCustomerId) {
     const data = await stripe.customers.create({
       email: email,
     });
@@ -45,38 +51,38 @@ async function getData({
         id: id,
       },
       data: {
-        StripeCustomerId: data.id,
+        stripeCustomerId: data.id,
       },
     });
   }
 }
 
-const DashboardLayout = async ({ children }: Props) => {
+export default async function DashboardLayout({
+  children,
+}: {
+  children: ReactNode;
+}) {
   const { getUser } = getKindeServerSession();
-  const userData = await getUser();
-  if (!userData) {
+  const user = await getUser();
+  if (!user) {
     return redirect("/");
   }
-
   await getData({
-    email: userData.email as string,
-    id: userData.id as string,
-    firstname: userData.given_name as string,
-    lastname: userData.family_name as string,
-    profileImage: userData.picture,
+    email: user.email as string,
+    firstName: user.given_name as string,
+    id: user.id as string,
+    lastName: user.family_name as string,
+    profileImage: user.picture,
   });
 
   return (
     <div className="flex flex-col space-y-6 mt-10">
       <div className="container grid flex-1 gap-12 md:grid-cols-[200px_1fr]">
-        <aside className="hidden w-[200px] flex-col md:flex "></aside>
-        <main className="flex justify-start gap-10">
+        <aside className="hidden w-[200px] flex-col md:flex">
           <DashboardNav />
-          {children}
-        </main>
+        </aside>
+        <main>{children}</main>
       </div>
     </div>
   );
-};
-
-export default DashboardLayout;
+}
