@@ -2,7 +2,7 @@ import DashboardNav from "@/components/header/DashboardNav";
 import { ReactNode } from "react";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { redirect } from "next/navigation";
-import prisma from "../../../prisma/client";
+import prisma from "@/db/client";
 import stripe from "@/lib/stripe";
 type Props = {
   children: ReactNode;
