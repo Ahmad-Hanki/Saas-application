@@ -34,6 +34,7 @@ async function getData(userId: string) {
       },
     },
   });
+  await prisma.$disconnect()
 
   return data;
 }

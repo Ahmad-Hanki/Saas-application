@@ -39,6 +39,8 @@ export default async function NewNoteRoute() {
         title: title,
       },
     });
+    await prisma.$disconnect()
+
 
     return redirect("/dashboard");
   }

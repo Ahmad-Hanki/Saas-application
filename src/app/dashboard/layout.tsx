@@ -74,6 +74,8 @@ export default async function DashboardLayout({
     lastName: user.family_name as string,
     profileImage: user.picture,
   });
+  await prisma.$disconnect()
+
 
   return (
     <div className="flex flex-col space-y-6 mt-10">

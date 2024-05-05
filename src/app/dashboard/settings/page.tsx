@@ -59,6 +59,8 @@ export default async function SettingPage() {
         colorScheme: colorScheme ?? undefined,
       },
     });
+    await prisma.$disconnect()
+
 
     revalidatePath("/", "layout");
   }

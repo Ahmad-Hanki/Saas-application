@@ -34,6 +34,8 @@ export async function POST(req: Request) {
       },
     });
 
+    await prisma.$disconnect()
+
     if (!user) throw new Error("User not found...");
 
     await prisma.subscription.create({

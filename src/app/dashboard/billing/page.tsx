@@ -40,6 +40,7 @@ async function getData(userId: string) {
       },
     },
   });
+  await prisma.$disconnect()
 
   return data;
 }
@@ -60,6 +61,8 @@ export default async function BillingPage() {
         stripeCustomerId: true,
       },
     });
+    await prisma.$disconnect()
+
 
     if (!dbUser?.stripeCustomerId) {
       throw new Error("Unable to get customer id");

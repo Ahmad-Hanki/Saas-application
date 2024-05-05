@@ -30,6 +30,8 @@ async function getData({ userId, noteId }: { userId: string; noteId: string }) {
       id: true,
     },
   });
+  await prisma.$disconnect()
+
 
   return data;
 }
